@@ -235,3 +235,85 @@ def plot_process_donut(df: pd.DataFrame) -> go.Figure:
     )
     fig.update_layout(title="Perbandingan Status Proses")
     return _base_layout(fig, height=390, legend=False)
+
+def plot_status_proses_ulp(df: pd.DataFrame):
+    # Pastikan nama kolom sesuai dengan dataset (misal: 'ulp' dan 'status_proses')
+    col_ulp = 'NAMA ULP' if 'NAMA ULP' in df.columns else ('ulp' if 'ulp' in df.columns else 'ULP')
+    col_status = 'STATUS PROSES' if 'STATUS PROSES' in df.columns else ('status_proses' if 'status_proses' in df.columns else ('status' if 'status' in df.columns else 'STATUS'))
+    
+    # 1. Hitung total per ULP untuk Background Bar
+    df_total = df.groupby(col_ulp).size().reset_index(name='total').sort_values(by='total', ascending=False)
+    
+    # 2. Hitung jumlah per Status di tiap ULP
+    df_status = df.groupby([col_ulp, col_status]).size().reset_index(name='jumlah')
+    
+    fig = go.Figure()
+    
+    # Tambahkan Batang Total Abu-abu (Background Lebar)
+    fig.add_trace(go.Bar(
+        x=df_total[col_ulp],
+        y=df_total['total'],
+        name='Total Gangguan',
+        marker_color='#D6D6D6',
+        width=0.7,
+        text=df_total['total'].apply(lambda x: f"{x:,}"),
+        textposition='outside',
+        hoverinfo='x+y+name'
+    ))
+    
+    # Daftar status unik & mapping warna
+    status_list = [s for s in df[col_status].dropna().unique()]
+    palette = ['#00C853', '#FF9800', '#29B6F6', '#AB47BC', '#E91E63']
+    
+    n_status = len(status_list)
+    bar_w = 0.55 / max(n_status, 1)  # Lebar batang sub-status agar pas di dalam batang total
+    
+    # Tambahkan Sub-Bar Berwarna di Dalamnya
+    for i, st in enumerate(status_list):
+        sub = df_status[df_status[col_status] == st]
+        sub = df_total[[col_ulp]].merge(sub, on=col_ulp, how='left').fillna(0)
+        
+        # Hitung titik geser tengah sub-bar
+        shift = -0.25 + (i * (bar_w + 0.02)) + (bar_w / 2)
+        
+        fig.add_trace(go.Bar(
+            x=sub[col_ulp],
+            y=sub['jumlah'],
+            name=str(st),
+            marker_color=palette[i % len(palette)],
+            width=bar_w,
+            offset=shift,
+            text=sub['jumlah'].apply(lambda x: f"{int(x):,}" if x > 0 else ""),
+            textposition='auto',
+            hoverinfo='x+y+name'
+        ))
+        
+    # Styling Layout agar Legenda tidak menabrak judul
+    fig.update_layout(
+        barmode='overlay',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        height=450,
+        margin=dict(t=50, b=80, l=30, r=20),
+        legend=dict(
+            orientation='h',
+            yanchor='bottom',
+            y=-0.35,
+            xanchor='center',
+            x=0.5,
+            font=dict(size=11)
+        ),
+        xaxis=dict(
+            tickangle=-25,
+            showgrid=False,
+            title=None
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='#EAEAEA',
+            title='Jumlah Gangguan'
+        )
+    )
+    
+    return fig
+
