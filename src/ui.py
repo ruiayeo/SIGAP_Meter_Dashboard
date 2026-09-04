@@ -1,4 +1,4 @@
-"""Komponen UI, tema, dan filter global dashboard."""
+"""Komponen UI, tema, dan filter global SIGAP Meter."""
 
 from __future__ import annotations
 
@@ -10,6 +10,10 @@ import streamlit as st
 from src.preprocessor import MONTH_NAMES
 
 
+# =========================================================
+# WARNA UTAMA
+# =========================================================
+
 PRIMARY = "#00288e"
 PRIMARY_LIGHT = "#e8efff"
 TEXT = "#191c1e"
@@ -19,8 +23,12 @@ SUCCESS = "#087f5b"
 WARNING = "#b45309"
 
 
+# =========================================================
+# CSS GLOBAL
+# =========================================================
+
 def render_app_style() -> None:
-    """Memuat Material Symbols dan CSS global dashboard."""
+    """Mengatur tampilan utama dashboard."""
 
     st.markdown(
         """
@@ -30,6 +38,16 @@ def render_app_style() -> None:
         >
 
         <style>
+        :root {
+            --primary: #00288e;
+            --primary-light: #e8efff;
+            --text: #191c1e;
+            --muted: #5f6368;
+            --border: #d9dde5;
+            --background: #f7f9fb;
+            --surface: #ffffff;
+        }
+
         .material-symbols-outlined {
             font-variation-settings:
                 'FILL' 0,
@@ -39,24 +57,24 @@ def render_app_style() -> None:
             vertical-align: middle;
         }
 
-        /* WARNA HALAMAN */
-
-        [data-testid="stAppViewContainer"] {
-            background-color: #f7f9fb;
-        }
-
-        [data-testid="stSidebar"] {
-            background-color: #ffffff;
-            border-right: 1px solid #e2e6ee;
-        }
-
         html,
         body,
         [class*="st-"] {
             font-size: 16px;
         }
 
-        /* TEKS UMUM */
+        .stApp {
+            color: var(--text);
+        }
+
+        [data-testid="stAppViewContainer"] {
+            background: var(--background);
+        }
+
+        [data-testid="stSidebar"] {
+            background: var(--surface);
+            border-right: 1px solid #e2e6ee;
+        }
 
         [data-testid="stMarkdownContainer"] p,
         [data-testid="stWidgetLabel"] p,
@@ -72,153 +90,52 @@ def render_app_style() -> None:
 
         [data-testid="stSidebar"]
         [data-testid="stMarkdownContainer"] p {
-            margin-bottom: 0.45rem;
+            margin-bottom: 0.4rem;
             font-size: 15px;
         }
-
-        /* TOMBOL NAVIGASI SIDEBAR */
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"] {
-            min-height: 52px;
-            padding: 11px 14px;
-            margin-bottom: 7px;
-            border: 1px solid transparent;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            color: #303238;
-            transition:
-                background-color 0.2s ease,
-                border-color 0.2s ease,
-                color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        /* Teks tombol navigasi */
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"] p {
-            margin: 0 !important;
-            font-size: 16px !important;
-            font-weight: 650 !important;
-            line-height: 1.35 !important;
-        }
-
-        /* Ikon tombol navigasi */
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"]
-        span {
-            font-size: 24px !important;
-        }
-
-        /* Efek ketika kursor diarahkan */
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"]:hover {
-            color: #00288e;
-            background-color: #eef3ff;
-            border-color: #c7d5f7;
-            transform: translateX(2px);
-        }
-
-        /* Menu yang sedang aktif */
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"][aria-current="page"] {
-            color: #00288e;
-            background-color: #e8efff;
-            border-color: #a9bff0;
-            box-shadow: 0 2px 5px rgba(0, 40, 142, 0.08);
-        }
-
-        [data-testid="stSidebar"]
-        a[data-testid="stPageLink-NavLink"][aria-current="page"] p {
-            color: #00288e !important;
-            font-weight: 750 !important;
-        }
-
-        /* Judul Navigasi Menu dan Manajemen File */
-
-        [data-testid="stSidebar"] h3 {
-            margin-top: 9px !important;
-            margin-bottom: 11px !important;
-            font-size: 17px !important;
-            font-weight: 750 !important;
-        }
-
-        /* INPUT DAN BUTTON */
-
-        [data-baseweb="select"] {
-            min-height: 42px;
-            font-size: 15px;
-        }
-
-        .stButton button,
-        .stDownloadButton button {
-            min-height: 43px;
-            border-radius: 9px;
-            font-size: 15px;
-            font-weight: 650;
-        }
-
-        /* TABEL */
-
-        [data-testid="stDataFrame"] {
-            overflow: hidden;
-            border: 1px solid #d9dde5;
-            border-radius: 10px;
-        }
-
-        [data-testid="stDataFrame"] * {
-            font-size: 14px;
-        }
-
-        /* METRIC STREAMLIT */
-
-        [data-testid="stMetric"] {
-            padding: 16px 18px;
-            background-color: #ffffff;
-            border: 1px solid #d9dde5;
-            border-radius: 12px;
-            box-shadow: 0 2px 7px rgba(25, 28, 30, 0.04);
-        }
-
-        /* UKURAN HALAMAN */
 
         .block-container {
-            max-width: 1440px;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
+            max-width: 1380px;
+            padding-top: 1.7rem;
+            padding-bottom: 2.5rem;
         }
 
         h1,
         h2,
         h3 {
-            color: #191c1e;
+            color: var(--text);
             letter-spacing: -0.02em;
         }
 
         h1 {
-            font-size: 2.15rem !important;
+            margin-bottom: 4px !important;
+            font-size: 32px !important;
             line-height: 1.25 !important;
         }
 
         h2 {
-            font-size: 1.75rem !important;
+            font-size: 25px !important;
+            line-height: 1.3 !important;
         }
 
         h3 {
-            font-size: 1.35rem !important;
+            margin-top: 12px !important;
+            margin-bottom: 10px !important;
+            font-size: 20px !important;
+            line-height: 1.35 !important;
         }
 
         hr {
             border-color: #e2e6ee !important;
         }
 
-        /* LOGO DAN NAMA DASHBOARD */
+        [data-testid="stCaptionContainer"] p {
+            color: var(--muted) !important;
+            font-size: 15px !important;
+        }
+
+
+        /* SIDEBAR DAN LOGO */
 
         .brand-block {
             display: flex;
@@ -230,13 +147,13 @@ def render_app_style() -> None:
         .brand-logo {
             width: 48px;
             height: 48px;
-            object-fit: contain;
+            flex-shrink: 0;
             border-radius: 7px;
-            box-shadow: 0 2px 6px rgba(25, 28, 30, 0.14);
+            object-fit: contain;
         }
 
         .brand-title {
-            color: #191c1e;
+            color: var(--primary);
             font-size: 19px;
             font-weight: 780;
             line-height: 1.2;
@@ -244,91 +161,81 @@ def render_app_style() -> None:
 
         .brand-subtitle {
             margin-top: 3px;
-            color: #5f6368;
+            color: var(--muted);
             font-size: 13px;
+            line-height: 1.4;
         }
 
         .sidebar-rule {
             margin: 0 0 15px;
             border: 0;
-            border-top: 1px solid #d9dde5;
+            border-top: 1px solid var(--border);
         }
 
-        /* HERO BERANDA */
+        a[data-testid="stPageLink-NavLink"] {
+            min-height: 50px;
+            margin-bottom: 5px;
+            padding: 10px 13px;
+            border-radius: 9px;
+        }
+
+        a[data-testid="stPageLink-NavLink"] p {
+            font-size: 15px !important;
+            font-weight: 650 !important;
+        }
+
+        a[data-testid="stPageLink-NavLink"]:hover {
+            background: var(--primary-light);
+        }
+
+
+        /* HERO LAMA */
 
         .hero-panel {
-            padding: 34px 36px;
-            margin: 8px 0 24px;
+            margin: 6px 0 22px;
+            padding: 25px 28px;
             color: #ffffff;
-            background:
-                linear-gradient(
-                    135deg,
-                    #00288e 0%,
-                    #1649b8 100%
-                );
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 40, 142, 0.16);
+            background: linear-gradient(
+                135deg,
+                #00288e 0%,
+                #1649b8 100%
+            );
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0, 40, 142, 0.14);
         }
 
         .hero-eyebrow {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             opacity: 0.86;
         }
 
         .hero-title {
-            margin: 9px 0;
-            font-size: 34px;
+            margin: 6px 0;
+            font-size: 30px;
             font-weight: 780;
             line-height: 1.22;
         }
 
         .hero-copy {
-            max-width: 880px;
-            font-size: 17px;
-            line-height: 1.65;
+            max-width: 850px;
+            font-size: 16px;
+            line-height: 1.55;
             opacity: 0.95;
         }
 
-        /* JUDUL BAGIAN */
-
-        .section-heading {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin: 7px 0 12px;
-        }
-
-        .section-heading .material-symbols-outlined {
-            color: #00288e;
-        }
-
-        .section-heading-title {
-            color: #191c1e;
-            font-size: 21px;
-            font-weight: 740;
-        }
-
-        .section-heading-copy {
-            margin-left: auto;
-            color: #5f6368;
-            font-size: 14px;
-        }
 
         /* KARTU KPI */
 
         .kpi-card {
-            --accent: #00288e;
-            --soft: #e8efff;
-
             position: relative;
-            min-height: 142px;
-            padding: 20px 21px;
+            min-height: 124px;
+            padding: 17px 18px;
             overflow: hidden;
-            background-color: #ffffff;
-            border: 1px solid #d9dde5;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
             box-shadow: 0 2px 7px rgba(25, 28, 30, 0.04);
         }
@@ -339,7 +246,7 @@ def render_app_style() -> None:
             bottom: 0;
             left: 0;
             width: 4px;
-            background-color: var(--accent);
+            background: var(--accent);
             content: "";
         }
 
@@ -351,29 +258,29 @@ def render_app_style() -> None:
         }
 
         .kpi-label {
-            color: #5f6368;
+            color: var(--muted);
             font-size: 13px;
             font-weight: 720;
-            letter-spacing: 0.035em;
+            letter-spacing: 0.03em;
             text-transform: uppercase;
         }
 
         .kpi-icon {
-            width: 38px;
-            height: 38px;
-            color: var(--accent);
-            background-color: var(--soft);
-            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 36px;
+            height: 36px;
+            color: var(--accent);
+            background: var(--soft);
+            border-radius: 9px;
         }
 
         .kpi-value {
-            margin-top: 13px;
+            margin-top: 9px;
             overflow: hidden;
-            color: #191c1e;
-            font-size: 28px;
+            color: var(--text);
+            font-size: 27px;
             font-weight: 780;
             line-height: 1.22;
             text-overflow: ellipsis;
@@ -381,122 +288,163 @@ def render_app_style() -> None:
         }
 
         .kpi-note {
-            margin-top: 7px;
+            margin-top: 5px;
             overflow: hidden;
-            color: #5f6368;
+            color: var(--muted);
             font-size: 13px;
+            line-height: 1.4;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* KETERANGAN FILTER */
-
-        .filter-caption {
-            margin: 5px 0 20px;
-            color: #5f6368;
-            font-size: 14px;
-        }
 
         /* KARTU INFORMASI */
 
         .info-card {
-            min-height: 158px;
-            padding: 21px;
-            background-color: #ffffff;
-            border: 1px solid #d9dde5;
+            min-height: 125px;
+            padding: 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
+            box-shadow: 0 2px 7px rgba(25, 28, 30, 0.03);
         }
 
         .info-card-icon {
-            margin-bottom: 9px;
-            color: #00288e;
+            margin-bottom: 7px;
+            color: var(--primary);
         }
 
         .info-card-title {
-            margin-bottom: 7px;
-            color: #191c1e;
+            margin-bottom: 5px;
+            color: var(--text);
             font-size: 17px;
             font-weight: 740;
         }
 
         .info-card-copy {
-            color: #5f6368;
+            color: var(--muted);
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
+
 
         /* KARTU PERINGKAT */
 
         .rank-card {
-            padding: 23px;
+            padding: 20px;
             text-align: center;
-            background-color: #ffffff;
-            border: 1px solid #d9dde5;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
         }
 
         .rank-number {
-            width: 34px;
-            height: 34px;
-            color: #00288e;
-            font-weight: 800;
-            background-color: #e8efff;
-            border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            width: 34px;
+            height: 34px;
+            color: var(--primary);
+            font-weight: 800;
+            background: var(--primary-light);
+            border-radius: 50%;
         }
 
         .rank-name {
-            margin: 11px 0 5px;
+            margin: 10px 0 4px;
             overflow: hidden;
-            color: #191c1e;
-            font-size: 18px;
+            color: var(--text);
+            font-size: 17px;
             font-weight: 750;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .rank-value {
-            color: #00288e;
-            font-size: 28px;
+            color: var(--primary);
+            font-size: 27px;
             font-weight: 790;
         }
 
         .rank-note {
-            color: #5f6368;
+            color: var(--muted);
             font-size: 13px;
         }
+
+
+        /* FILTER */
+
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            background: var(--surface);
+            border-radius: 12px;
+        }
+
+        [data-baseweb="select"] {
+            font-size: 15px;
+        }
+
+        [data-baseweb="select"] > div {
+            min-height: 44px;
+            border-radius: 8px;
+        }
+
+        div[data-testid="stSelectbox"] label p {
+            font-size: 15px !important;
+            font-weight: 650 !important;
+        }
+
+        .filter-caption {
+            margin: 5px 0 18px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+
+        /* TOMBOL */
+
+        .stButton button,
+        .stDownloadButton button {
+            min-height: 42px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+
+        /* TABEL */
+
+        [data-testid="stDataFrame"] {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        [data-testid="stDataFrame"] * {
+            font-size: 14px;
+        }
+
 
         /* RESPONSIVE */
 
         @media (max-width: 900px) {
-            [data-testid="stSidebar"]
-            a[data-testid="stPageLink-NavLink"] {
-                min-height: 48px;
-                padding: 10px 12px;
+            .block-container {
+                padding-top: 1.2rem;
             }
 
-            [data-testid="stSidebar"]
-            a[data-testid="stPageLink-NavLink"] p {
-                font-size: 15px !important;
+            h1 {
+                font-size: 28px !important;
+            }
+
+            .kpi-card {
+                min-height: 116px;
+            }
+
+            .hero-panel {
+                padding: 21px;
             }
 
             .hero-title {
-                font-size: 29px;
-            }
-
-            .hero-copy {
-                font-size: 15px;
-            }
-
-            .section-heading {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .section-heading-copy {
-                margin-left: 0;
+                font-size: 27px;
             }
         }
         </style>
@@ -505,15 +453,21 @@ def render_app_style() -> None:
     )
 
 
+# =========================================================
+# JUDUL HALAMAN
+# =========================================================
+
 def render_page_header(
     icon: str,
     title: str,
-    description: str,
+    description: str = "",
 ) -> None:
     """Menampilkan judul halaman."""
 
     st.title(f":material/{icon}: {title}")
-    st.caption(description)
+
+    if description:
+        st.caption(description)
 
 
 def render_section_heading(
@@ -521,15 +475,16 @@ def render_section_heading(
     title: str,
     copy: str = "",
 ) -> None:
-    """Menampilkan judul setiap bagian."""
+    """Menampilkan judul bagian tanpa penjelasan panjang."""
 
     st.markdown(
-        f"### :material/{icon}: {title}"
+        f"### :material/{escape(icon)}: {escape(title)}"
     )
 
-    if copy:
-        st.caption(copy)
 
+# =========================================================
+# KARTU KPI
+# =========================================================
 
 def render_kpi_card(
     label: str,
@@ -539,59 +494,84 @@ def render_kpi_card(
     accent: str = PRIMARY,
     soft: str = PRIMARY_LIGHT,
 ) -> None:
-    """Menampilkan kartu KPI tanpa HTML bertingkat."""
+    """Menampilkan kartu KPI."""
 
-    safe_label = escape(str(label))
-    safe_value = escape(str(value))
-    safe_note = escape(str(note))
-    safe_accent = escape(str(accent))
-    safe_soft = escape(str(soft))
+    label_safe = escape(str(label))
+    value_safe = escape(str(value))
+    note_safe = escape(str(note))
+    icon_safe = escape(str(icon))
+    accent_safe = escape(str(accent))
+    soft_safe = escape(str(soft))
 
-    with st.container(border=True):
-        st.markdown(
-            f":material/{icon}: **{safe_label}**"
-        )
+    st.markdown(
+        f"""
+        <div
+            class="kpi-card"
+            style="--accent:{accent_safe};--soft:{soft_safe};"
+        >
+            <div class="kpi-top">
+                <div class="kpi-label">{label_safe}</div>
 
-        st.markdown(
-            (
-                f'<div style="'
-                f'color:#191c1e;'
-                f'font-size:28px;'
-                f'font-weight:780;'
-                f'line-height:1.25;'
-                f'margin-top:8px;'
-                f'margin-bottom:6px;'
-                f'overflow:hidden;'
-                f'text-overflow:ellipsis;'
-                f'white-space:nowrap;'
-                f'border-left:4px solid {safe_accent};'
-                f'background-color:{safe_soft};'
-                f'padding:10px 14px;'
-                f'border-radius:8px;'
-                f'">'
-                f'{safe_value}'
-                f'</div>'
-            ),
-            unsafe_allow_html=True,
-        )
+                <div class="kpi-icon">
+                    <span class="material-symbols-outlined">
+                        {icon_safe}
+                    </span>
+                </div>
+            </div>
 
-        st.caption(safe_note)
+            <div class="kpi-value" title="{value_safe}">
+                {value_safe}
+            </div>
 
+            <div class="kpi-note" title="{note_safe}">
+                {note_safe}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# =========================================================
+# KARTU INFORMASI
+# =========================================================
 
 def render_info_card(
     icon: str,
     title: str,
     copy: str,
 ) -> None:
-    """Menampilkan kartu informasi dashboard."""
+    """Menampilkan kartu menu atau informasi."""
 
-    with st.container(border=True):
-        st.markdown(
-            f"#### :material/{icon}: {title}"
-        )
+    icon_safe = escape(str(icon))
+    title_safe = escape(str(title))
+    copy_safe = escape(str(copy))
 
-        st.write(copy)
+    st.markdown(
+        f"""
+        <div class="info-card">
+            <div class="info-card-icon">
+                <span class="material-symbols-outlined">
+                    {icon_safe}
+                </span>
+            </div>
 
+            <div class="info-card-title">
+                {title_safe}
+            </div>
+
+            <div class="info-card-copy">
+                {copy_safe}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# =========================================================
+# KARTU PERINGKAT
+# =========================================================
 
 def render_rank_card(
     rank: int,
@@ -601,364 +581,344 @@ def render_rank_card(
 ) -> None:
     """Menampilkan kartu peringkat petugas."""
 
-    safe_name = escape(str(name))
-    safe_note = escape(str(note))
+    name_safe = escape(str(name))
+    note_safe = escape(str(note))
 
-    with st.container(border=True):
-        st.markdown(
-            f"#### :material/workspace_premium: Peringkat {rank}"
-        )
+    st.markdown(
+        f"""
+        <div class="rank-card">
+            <div class="rank-number">
+                {rank}
+            </div>
 
-        st.markdown(
-            (
-                f'<div style="'
-                f'color:#191c1e;'
-                f'font-size:18px;'
-                f'font-weight:750;'
-                f'margin-top:6px;'
-                f'margin-bottom:8px;'
-                f'overflow:hidden;'
-                f'text-overflow:ellipsis;'
-                f'white-space:nowrap;'
-                f'">'
-                f'{safe_name}'
-                f'</div>'
-            ),
-            unsafe_allow_html=True,
-        )
+            <div class="rank-name" title="{name_safe}">
+                {name_safe}
+            </div>
 
-        st.markdown(
-            (
-                f'<div style="'
-                f'color:#00288e;'
-                f'font-size:28px;'
-                f'font-weight:790;'
-                f'line-height:1.2;'
-                f'">'
-                f'{value:,}'
-                f'</div>'
-            ),
-            unsafe_allow_html=True,
-        )
+            <div class="rank-value">
+                {value:,}
+            </div>
 
-        st.caption(safe_note)
+            <div class="rank-note">
+                {note_safe}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
+
+# =========================================================
+# FUNGSI PENDUKUNG FILTER
+# =========================================================
 
 def _ensure_select_state(
     key: str,
     options: list[object],
     default: object,
 ) -> None:
-    """Menjamin nilai selectbox tersedia pada pilihan."""
+    """Memastikan nilai filter tersedia dalam pilihan."""
 
     if st.session_state.get(key) not in options:
         st.session_state[key] = default
 
 
-def _ensure_multi_state(
-    key: str,
-    options: list[object],
-    default: list[object] | None = None,
-) -> None:
-    """Menjamin nilai multiselect tersedia pada pilihan."""
+def _reset_global_filters() -> None:
+    """Mengembalikan filter ke pilihan awal."""
 
-    current = st.session_state.get(key)
-
-    if current is None:
-        st.session_state[key] = default or []
-        return
-
-    st.session_state[key] = [
-        value
-        for value in current
-        if value in options
+    filter_keys = [
+        "global_period",
+        "global_up3",
+        "global_ulp",
+        "global_officer",
     ]
 
+    for key in filter_keys:
+        st.session_state.pop(key, None)
 
-def render_global_filter_bar(
-    df: pd.DataFrame,
-) -> None:
-    """Menampilkan filter global dashboard."""
 
-    render_section_heading(
-        "filter_alt",
-        "Filter Data",
-        "Pilihan berlaku pada seluruh isi halaman",
+def _format_period(value: object) -> str:
+    """Mengubah periode menjadi nama bulan dan tahun."""
+
+    if value == "Semua Periode":
+        return "Semua Periode"
+
+    period = pd.Timestamp(value)
+    month_name = MONTH_NAMES.get(
+        period.month,
+        str(period.month),
     )
 
+    return f"{month_name} {period.year}"
+
+
+# =========================================================
+# FILTER GLOBAL
+# =========================================================
+
+def render_global_filter_bar(df: pd.DataFrame) -> None:
+    """Menampilkan filter yang ringkas dan mudah digunakan."""
+
+    st.markdown("### :material/filter_alt: Filter Data")
+
+    period_values = sorted(
+        {
+            pd.Timestamp(value)
+            for value in df["PERIODE"].dropna().unique()
+        }
+    )
+
+    period_options: list[object] = [
+        "Semua Periode",
+        *period_values,
+    ]
+
+    _ensure_select_state(
+        "global_period",
+        period_options,
+        "Semua Periode",
+    )
+
+    selected_period = st.session_state["global_period"]
+
+    scope = df.copy()
+
+    if selected_period != "Semua Periode":
+        scope = scope[
+            scope["PERIODE"] == pd.Timestamp(selected_period)
+        ]
+
+    up3_values = sorted(
+        scope["NAMA UP3"]
+        .dropna()
+        .astype(str)
+        .unique()
+        .tolist()
+    )
+
+    up3_options = [
+        "Semua UP3",
+        *up3_values,
+    ]
+
+    _ensure_select_state(
+        "global_up3",
+        up3_options,
+        "Semua UP3",
+    )
+
+    selected_up3 = st.session_state["global_up3"]
+
+    if selected_up3 != "Semua UP3":
+        scope = scope[
+            scope["NAMA UP3"].astype(str) == selected_up3
+        ]
+
+    ulp_values = sorted(
+        scope["NAMA ULP"]
+        .dropna()
+        .astype(str)
+        .unique()
+        .tolist()
+    )
+
+    ulp_options = [
+        "Semua ULP",
+        *ulp_values,
+    ]
+
+    _ensure_select_state(
+        "global_ulp",
+        ulp_options,
+        "Semua ULP",
+    )
+
+    selected_ulp = st.session_state["global_ulp"]
+
+    if selected_ulp != "Semua ULP":
+        scope = scope[
+            scope["NAMA ULP"].astype(str) == selected_ulp
+        ]
+
+    officer_values = sorted(
+        scope["PETUGAS"]
+        .dropna()
+        .astype(str)
+        .unique()
+        .tolist()
+    )
+
+    officer_options = [
+        "Semua Petugas",
+        *officer_values,
+    ]
+
+    _ensure_select_state(
+        "global_officer",
+        officer_options,
+        "Semua Petugas",
+    )
+
+    show_up3 = len(up3_values) > 1
+
     with st.container(border=True):
-        years = sorted(
-            df["TAHUN"]
-            .dropna()
-            .astype(int)
-            .unique()
-            .tolist(),
-            reverse=True,
+        if show_up3:
+            columns = st.columns(4)
+
+            with columns[0]:
+                st.selectbox(
+                    "Periode",
+                    period_options,
+                    key="global_period",
+                    format_func=_format_period,
+                )
+
+            with columns[1]:
+                st.selectbox(
+                    "UP3",
+                    up3_options,
+                    key="global_up3",
+                )
+
+            with columns[2]:
+                st.selectbox(
+                    "ULP",
+                    ulp_options,
+                    key="global_ulp",
+                )
+
+            with columns[3]:
+                st.selectbox(
+                    "Petugas",
+                    officer_options,
+                    key="global_officer",
+                )
+
+        else:
+            columns = st.columns(3)
+
+            with columns[0]:
+                st.selectbox(
+                    "Periode",
+                    period_options,
+                    key="global_period",
+                    format_func=_format_period,
+                )
+
+            with columns[1]:
+                st.selectbox(
+                    "ULP",
+                    ulp_options,
+                    key="global_ulp",
+                )
+
+            with columns[2]:
+                st.selectbox(
+                    "Petugas",
+                    officer_options,
+                    key="global_officer",
+                )
+
+        st.button(
+            "Reset Filter",
+            icon=":material/restart_alt:",
+            key="reset_global_filter_button",
+            on_click=_reset_global_filters,
         )
 
-        year_options: list[object] = [
-            "Semua Tahun",
-            *years,
-        ]
 
-        _ensure_select_state(
-            "global_year",
-            year_options,
-            year_options[0],
-        )
-
-        col_year, col_month, col_up3 = st.columns(
-            [0.8, 1.2, 1]
-        )
-
-        with col_year:
-            st.selectbox(
-                "Tahun",
-                year_options,
-                key="global_year",
-            )
-
-        period_scope = df
-
-        selected_year = st.session_state["global_year"]
-
-        if selected_year != "Semua Tahun":
-            period_scope = period_scope[
-                period_scope["TAHUN"] == int(selected_year)
-            ]
-
-        months = sorted(
-            period_scope["BULAN_NUM"]
-            .dropna()
-            .astype(int)
-            .unique()
-            .tolist()
-        )
-
-        _ensure_multi_state(
-            "global_months",
-            months,
-            months,
-        )
-
-        with col_month:
-            st.multiselect(
-                "Bulan",
-                months,
-                key="global_months",
-                format_func=lambda value: MONTH_NAMES.get(
-                    int(value),
-                    str(value),
-                ),
-                placeholder="Semua bulan",
-            )
-
-        scope = period_scope
-
-        selected_months = st.session_state.get(
-            "global_months",
-            [],
-        )
-
-        if selected_months:
-            scope = scope[
-                scope["BULAN_NUM"].isin(selected_months)
-            ]
-
-        up3_values = sorted(
-            scope["NAMA UP3"]
-            .dropna()
-            .unique()
-            .tolist()
-        )
-
-        up3_options = [
-            "Semua UP3",
-            *up3_values,
-        ]
-
-        _ensure_select_state(
-            "global_up3",
-            up3_options,
-            up3_options[0],
-        )
-
-        with col_up3:
-            st.selectbox(
-                "Wilayah UP3",
-                up3_options,
-                key="global_up3",
-            )
-
-        selected_up3 = st.session_state["global_up3"]
-
-        if selected_up3 != "Semua UP3":
-            scope = scope[
-                scope["NAMA UP3"] == selected_up3
-            ]
-
-        col_ulp, col_officer = st.columns(2)
-
-        ulp_values = sorted(
-            scope["NAMA ULP"]
-            .dropna()
-            .unique()
-            .tolist()
-        )
-
-        _ensure_multi_state(
-            "global_ulps",
-            ulp_values,
-        )
-
-        with col_ulp:
-            st.multiselect(
-                "Unit Layanan (ULP)",
-                ulp_values,
-                key="global_ulps",
-                placeholder="Semua ULP",
-            )
-
-        selected_ulps = st.session_state.get(
-            "global_ulps",
-            [],
-        )
-
-        if selected_ulps:
-            scope = scope[
-                scope["NAMA ULP"].isin(selected_ulps)
-            ]
-
-        officer_values = sorted(
-            scope["PETUGAS"]
-            .dropna()
-            .unique()
-            .tolist()
-        )
-
-        _ensure_multi_state(
-            "global_officers",
-            officer_values,
-        )
-
-        with col_officer:
-            st.multiselect(
-                "Nama Petugas",
-                officer_values,
-                key="global_officers",
-                placeholder="Semua petugas",
-            )
-
+# =========================================================
+# PENERAPAN FILTER
+# =========================================================
 
 def apply_global_filters(
     df: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Menerapkan filter global pada data."""
+    """Menerapkan pilihan filter ke seluruh data."""
 
     filtered = df.copy()
 
-    year = st.session_state.get(
-        "global_year",
-        "Semua Tahun",
+    selected_period = st.session_state.get(
+        "global_period",
+        "Semua Periode",
     )
 
-    if year != "Semua Tahun":
+    if selected_period != "Semua Periode":
         filtered = filtered[
-            filtered["TAHUN"] == int(year)
+            filtered["PERIODE"] == pd.Timestamp(selected_period)
         ]
 
-    months = st.session_state.get(
-        "global_months",
-        [],
-    )
-
-    if months:
-        filtered = filtered[
-            filtered["BULAN_NUM"].isin(months)
-        ]
-
-    up3 = st.session_state.get(
+    selected_up3 = st.session_state.get(
         "global_up3",
         "Semua UP3",
     )
 
-    if up3 != "Semua UP3":
+    if selected_up3 != "Semua UP3":
         filtered = filtered[
-            filtered["NAMA UP3"] == up3
+            filtered["NAMA UP3"].astype(str) == selected_up3
         ]
 
-    ulps = st.session_state.get(
-        "global_ulps",
-        [],
+    selected_ulp = st.session_state.get(
+        "global_ulp",
+        "Semua ULP",
     )
 
-    if ulps:
+    if selected_ulp != "Semua ULP":
         filtered = filtered[
-            filtered["NAMA ULP"].isin(ulps)
+            filtered["NAMA ULP"].astype(str) == selected_ulp
         ]
 
-    officers = st.session_state.get(
-        "global_officers",
-        [],
+    selected_officer = st.session_state.get(
+        "global_officer",
+        "Semua Petugas",
     )
 
-    if officers:
+    if selected_officer != "Semua Petugas":
         filtered = filtered[
-            filtered["PETUGAS"].isin(officers)
+            filtered["PETUGAS"].astype(str) == selected_officer
         ]
 
     return filtered
 
 
-def filter_caption(
-    df: pd.DataFrame,
-) -> str:
-    """Membuat keterangan data setelah filter."""
+# =========================================================
+# RINGKASAN FILTER
+# =========================================================
+
+def filter_caption(df: pd.DataFrame) -> str:
+    """Menampilkan ringkasan hasil filter."""
 
     if df.empty:
-        return "Tidak ada data yang sesuai dengan filter."
+        return "Tidak ada data yang sesuai."
 
-    valid_dates = df["TANGGAL_INPUT"].dropna()
-
-    if valid_dates.empty:
-        period = "periode tidak diketahui"
-    else:
-        minimum_date = valid_dates.min()
-        maximum_date = valid_dates.max()
-
-        period = (
-            f"{minimum_date:%d %b %Y} "
-            f"sampai "
-            f"{maximum_date:%d %b %Y}"
-        )
-
-    total_rows = len(df)
+    total_data = len(df)
     total_ulp = df["NAMA ULP"].nunique()
+    total_officer = df["PETUGAS"].nunique()
 
     return (
-        f"Menampilkan {total_rows:,} gangguan · "
-        f"{total_ulp} ULP · "
-        f"{period}"
+        f"{total_data:,} data | "
+        f"{total_ulp:,} ULP | "
+        f"{total_officer:,} petugas"
     )
 
 
-def require_data() -> pd.DataFrame:
-    """Menghentikan halaman jika data belum tersedia."""
+# =========================================================
+# VALIDASI DATA
+# =========================================================
 
+def require_data() -> pd.DataFrame:
+    """Menghentikan halaman jika data belum diunggah."""
+
+    data = st.session_state.get("raw_data")
     data_ready = st.session_state.get(
         "data_ready",
         False,
     )
 
-    raw_data = st.session_state.get(
-        "raw_data",
-    )
-
-    if not data_ready or raw_data is None:
+    if not data_ready or data is None:
         st.info(
-            "Unggah satu atau beberapa file Excel "
-            "melalui bagian Manajemen File di sidebar."
+            "Unggah file Excel melalui menu Data di sidebar."
         )
         st.stop()
 
-    return raw_data
+    return data
